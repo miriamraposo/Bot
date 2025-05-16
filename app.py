@@ -1,119 +1,121 @@
-from flask import Flask, render_template, request, jsonify, session
-from flask_session import Session
+from flask import Flask, render_template, request, jsonify, url_for
+from gtts import gTTS
+import os
+import time
 
 app = Flask(__name__)
-app.secret_key = "clave_secreta"
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
-# Lógica del chatbot
-def procesar_input(user_input):
-    datos = session.get("datos", {})
-    respuesta = ""
+# Base de datos mejorada
+MENUS = {
+    "bajar_peso": {
+        "vegetariano": {
+            "menu": ["Smoothie verde 🥤", "Ensalada de quinoa 🥗", "Sopa de lentejas 🍲"],
+            "calorias": 1200
+        },
+        "vegano": {
+            "menu": ["Tostadas de aguacate 🥑", "Buddha bowl 🌱", "Curry de garbanzos 🍛"],
+            "calorias": 1100
+        },
+        "tradicional": {
+            "menu": ["Huevos revueltos 🍳", "Pechuga a la plancha 🍗", "Merluza al horno 🐟"],
+            "calorias": 1300
+        }
+    },
+    "aumentar_masa": {
+        "vegetariano": {
+            "menu": ["Batido proteico 🥛", "Lentejas con arroz 🥘", "Tofu salteado 🍳"],
+            "calorias": 2500
+        },
+        "vegano": {
+            "menu": ["Batido de cacahuete 🥜", "Seitan a la parrilla 🌭", "Hamburguesa de lentejas 🍔"],
+            "calorias": 2400
+        },
+        "tradicional": {
+            "menu": ["Tortilla de claras 🥚", "Pollo con boniato 🍗", "Salmón con espárragos 🐟"],
+            "calorias": 2600
+        }
+    }
+}
 
-    if "alimentacion" not in datos:
-        opciones = {"1": "Omnívoro", "2": "Vegetariano", "3": "Vegano", "4": "Otro"}
-        if user_input in opciones:
-            datos["alimentacion"] = opciones[user_input]
-            respuesta = "¿Cuál es tu objetivo?\n1. Bajar de peso\n2. Mantener peso\n3. Ganar masa muscular 💪"
-        else:
-            respuesta = "¿Cuál es tu tipo de alimentación?\n1. Omnívoro 🍗\n2. Vegetariano 🥗\n3. Vegano 🌱\n4. Otro 🍽️"
-    elif "objetivo" not in datos:
-        objetivos = {"1": "Bajar de peso", "2": "Mantener peso", "3": "Ganar masa muscular"}
-        if user_input in objetivos:
-            datos["objetivo"] = objetivos[user_input]
-            respuesta = "¿Sos una persona activa o sedentaria?\n1. Activa 🏃\n2. Sedentaria 🛋️"
-        else:
-            respuesta = "¿Cuál es tu objetivo?\n1. Bajar de peso\n2. Mantener peso\n3. Ganar masa muscular 💪"
-    elif "actividad" not in datos:
-        actividad = {"1": "Activa", "2": "Sedentaria"}
-        if user_input in actividad:
-            datos["actividad"] = actividad[user_input]
-            respuesta = "¿Querés recibir recomendaciones de menú? (Sí o No)"
-        else:
-            respuesta = "¿Sos una persona activa o sedentaria?\n1. Activa 🏃\n2. Sedentaria 🛋️"
-    elif "recomendar" not in datos:
-        if user_input.lower() in ["sí", "si"]:
-            datos["recomendar"] = "Sí"
-            respuesta = generar_menu(datos)
-        elif user_input.lower() == "no":
-            datos["recomendar"] = "No"
-            respuesta = "¡Perfecto! Podés consultarme cuando quieras 💬"
-        else:
-            respuesta = "¿Querés recibir recomendaciones de menú? (Sí o No)"
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/get_response', methods=['POST'])
+def get_response():
+    user_message = request.form['message'].lower()
+    response = generate_response(user_message)
+    return jsonify(response)
+
+def generate_response(message):
+    if "hola" in message:
+        return {
+            "response": "¡Hola! 👋 Soy NutriBot. ¿Quieres bajar de peso o aumentar masa muscular?",
+            "reset": False
+        }
+    elif "reiniciar" in message:
+        return {
+            "response": "Conversación reiniciada. ¿Quieres bajar de peso o aumentar masa muscular?",
+            "reset": True
+        }
+    elif "bajar de peso" in message:
+        return {
+            "response": "¡Excelente! 💪 ¿Prefieres menú vegetariano, vegano o tradicional?",
+            "goal": "bajar_peso"
+        }
+    elif "aumentar masa muscular" in message:
+        return {
+            "response": "¡Perfecto! 🏋️ ¿Prefieres menú vegetariano, vegano o tradicional?",
+            "goal": "aumentar_masa"
+        }
+    elif "vegetariano" in message:
+        return {
+            "response": "Menú vegetariano seleccionado 🥕. ¿Quieres ver tu plan nutricional? (si/no)",
+            "diet": "vegetariano"
+        }
+    elif "vegano" in message:
+        return {
+            "response": "Menú vegano seleccionado 🌱. ¿Quieres ver tu plan nutricional? (si/no)",
+            "diet": "vegano"
+        }
+    elif "tradicional" in message:
+        return {
+            "response": "Menú tradicional seleccionado 🍗. ¿Quieres ver tu plan nutricional? (si/no)",
+            "diet": "tradicional"
+        }
+    elif "si" in message:
+        return {
+            "response": generate_menu(),
+            "show_menu": True
+        }
+    elif "no" in message:
+        return {"response": "¡Entendido! ¿En qué más puedo ayudarte?"}
     else:
-        respuesta = "Si querés volver a empezar, hacé clic en 'Reiniciar conversación 🔄'"
+        return {"response": "No entendí. ¿Podrías repetirlo?"}
 
-    session["datos"] = datos
-    return respuesta
+def generate_menu():
+    # Esta función se completa con JavaScript para mantener el estado
+    return "Menú generado dinámicamente"
 
+@app.route('/get_full_menu', methods=['POST'])
+def get_full_menu():
+    data = request.json
+    menu_data = MENUS[data['goal']][data['diet']]
+    return jsonify({
+        "menu": "🍽️ <strong>Menú recomendado:</strong><br>• " + "<br>• ".join(menu_data["menu"]),
+        "calories": f"⚖️ <strong>Calorías diarias:</strong> {menu_data['calorias']} kcal"
+    })
 
-def generar_menu(datos):
-    tipo = datos.get("alimentacion", "Omnívoro")
-    objetivo = datos.get("objetivo", "Mantener peso")
-    actividad = datos.get("actividad", "Activa")
+# Voz mejorada (ignora emojis)
+@app.route('/text_to_speech', methods=['POST'])
+def text_to_speech():
+    text = request.form['text']
+    clean_text = ''.join([c for c in text if c.isalpha() or c.isspace() or c in ',.?!'])
+    tts = gTTS(text=clean_text, lang='es', tld='es')
+    filename = f"audio_{int(time.time())}.mp3"
+    os.makedirs('static/audios', exist_ok=True)
+    tts.save(f'static/audios/{filename}')
+    return jsonify({'audio_url': url_for('static', filename=f'audios/{filename}')})
 
-    menu = f"🍽️ Menú recomendado para vos ({tipo}, {objetivo}, {actividad}):\n\n"
-
-    if tipo == "Omnívoro":
-        if objetivo == "Bajar de peso":
-            menu += "🥣 Desayuno: Yogur descremado con granola y frutas 🍓\n"
-            menu += "🥗 Almuerzo: Ensalada con pollo a la plancha y arroz integral 🍚\n"
-            menu += "🍎 Merienda: Licuado de frutas con avena 🥤\n"
-            menu += "🍽️ Cena: Sopa de verduras + pescado grillado con puré de calabaza 🐟"
-        elif objetivo == "Ganar masa muscular":
-            menu += "🍳 Desayuno: Omelette con espinaca y queso + 2 tostadas 🥚\n"
-            menu += "🥩 Almuerzo: Carne magra con arroz integral y ensalada 🥗\n"
-            menu += "🍌 Merienda: Batido de banana con leche y nueces 🥜\n"
-            menu += "🍝 Cena: Pasta integral con atún + vegetales al vapor 🥦"
-        else:
-            menu += "🍞 Desayuno: Tostadas integrales con palta y huevo 🍳\n"
-            menu += "🍗 Almuerzo: Pollo al horno con puré mixto y ensalada 🥬\n"
-            menu += "🍉 Merienda: Fruta fresca y yogur natural 🍎\n"
-            menu += "🍽️ Cena: Omelette con vegetales + arroz integral 🍚"
-
-    elif tipo == "Vegetariano":
-        menu += "🍞 Desayuno: Pan integral con mermelada natural y frutas 🍊\n"
-        menu += "🥙 Almuerzo: Tarta de vegetales con ensalada completa 🥬\n"
-        menu += "🥛 Merienda: Yogur con cereales y semillas 🌻\n"
-        menu += "🍛 Cena: Guiso de lentejas con arroz y verduras 🥕"
-
-    elif tipo == "Vegano":
-        menu += "🍌 Desayuno: Porridge de avena con banana y chia 🌾\n"
-        menu += "🥗 Almuerzo: Ensalada de quinoa, garbanzos y vegetales 🥒\n"
-        menu += "🍎 Merienda: Frutas frescas y frutos secos 🥜\n"
-        menu += "🍝 Cena: Pasta integral con salsa de tomate natural y tofu 🍅"
-
-    else:
-        menu += "📝 Por favor especificá más detalles para poder darte un menú adecuado."
-
-    menu += "\n\n🔍 Si querés ver una tabla de calorías, presioná el botón correspondiente al final 💡"
-    return menu
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
-    user_input = request.form["user_input"]
-    respuesta = procesar_input(user_input)
-    return jsonify({"message": respuesta})
-
-@app.route("/reiniciar", methods=["POST"])
-def reiniciar():
-    session.pop("datos", None)
-    return jsonify({"message": "✅ Conversación reiniciada. ¡Hola! Soy 🤖 Nutribot, tu asistente nutricional.\n¿Cuál es tu tipo de alimentación?\n1. Omnívoro 🍗\n2. Vegetariano 🥗\n3. Vegano 🌱\n4. Otro 🍽️"})
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-
-
-
-
-

@@ -1,200 +1,57 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nutribot 🍎</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
-  <style>
-    body {
-      background-color: #fff;
-      font-family: "Segoe UI", sans-serif;
-    }
-
-    .chat-container {
-      max-width: 600px;
-      margin: 20px auto;
-      background: #f9f9f9;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .chat-box {
-      max-height: 400px;
-      overflow-y: auto;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #fff;
-      margin-bottom: 15px;
-    }
-
-    .user-message {
-      text-align: right;
-      color: #1e88e5;
-      margin-bottom: 8px;
-    }
-
-    .bot-message {
-      text-align: left;
-      color: #43a047;
-      margin-bottom: 8px;
-    }
-
-    .chat-form input {
-      width: calc(100% - 90px);
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      display: inline-block;
-    }
-
-    .chat-form button {
-      width: 80px;
-      background-color: #ff7043;
-      border: none;
-      color: white;
-      border-radius: 10px;
-      padding: 10px;
-      margin-left: 5px;
-    }
-
-    .nutrition-image {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      height: auto;
-    }
-
-    .title {
-      text-align: center;
-      font-weight: bold;
-      color: #388e3c;
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .emoji {
-      font-size: 32px;
-      margin-right: 8px;
-    }
-
-    .center-button {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .center-button button {
-      min-width: 200px;
-      background-color: #66bb6a;
-      border: none;
-      color: white;
-      border-radius: 10px;
-      padding: 10px;
-    }
-
-    .calories-table {
-      display: none;
-      margin-top: 20px;
-      background: #f1f8e9;
-      padding: 15px;
-      border-radius: 10px;
-    }
-
-    .table-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #33691e;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriBot 🤖 - Asistente Nutricional</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="chat-container">
-    <div class="title">
-      🤖 Nutribot – Tu Asistente de Bienestar
+    <div class="container">
+        <header>
+            <div class="title-container">
+                <h1>NutriBot <span class="emoji">🤖</span></h1>
+                <button id="reset-btn" class="btn-warning">Reiniciar</button>
+            </div>
+            <p class="subtitle">Tu plan nutricional personalizado</p>
+            <img src="{{ url_for('static', filename='images/comida_saludable.jpg') }}" 
+                 alt="Alimentos saludables" 
+                 class="responsive-image">
+        </header>
+
+        <div class="chat-container">
+            <div id="chat-box" class="chat-box"></div>
+            <div class="input-group">
+                <input type="text" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="off">
+                <div class="button-group">
+                    <button id="voice-btn" class="btn-secondary" title="Usar voz">🎤</button>
+                    <button id="send-btn" class="btn-primary">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button id="show-calories" class="btn-action">📊 Ver Calorías</button>
+            <button id="show-menu" class="btn-action oculto">📋 Ver Mi Menú</button>
+        </div>
+
+        <div id="nutrition-data" class="nutrition-container oculto">
+            <div id="menu-display" class="nutrition-box"></div>
+            <div id="calories-display" class="nutrition-box"></div>
+        </div>
     </div>
 
-    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80"
-         alt="Comida saludable" class="nutrition-image" />
-
-    <div id="chat-box" class="chat-box">
-      <div class="bot-message">🤖 ¡Hola! Soy Nutribot. ¿Querés empezar tu plan nutricional? Escribí <strong>“sí”</strong> para comenzar. 🍎</div>
-    </div>
-
-    <form id="chat-form" class="chat-form">
-      <input
-        type="text"
-        id="user-input"
-        name="user_input"
-        placeholder="Escribí tu respuesta..."
-        autocomplete="off"
-        required />
-      <button type="submit">Enviar</button>
-    </form>
-
-    <div class="center-button">
-      <button onclick="reiniciarChat()">🔄 Reiniciar conversación</button>
-      <button onclick="mostrarTabla()">📊 Ver tabla de calorías</button>
-    </div>
-
-    <div id="tabla-calorias" class="calories-table">
-      <div class="table-title">Tabla estimada de calorías (por porción)</div>
-      <ul>
-        <li>🍳 Desayuno saludable: 350 kcal</li>
-        <li>🥗 Almuerzo balanceado: 600 kcal</li>
-        <li>🍉 Merienda liviana: 200 kcal</li>
-        <li>🥘 Cena liviana: 400 kcal</li>
-      </ul>
-    </div>
-  </div>
-
-  <script>
-    const chatForm = document.getElementById("chat-form");
-    const userInput = document.getElementById("user-input");
-    const chatBox = document.getElementById("chat-box");
-
-    chatForm.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const input = userInput.value.trim();
-      if (!input) return;
-
-      addMessage("user", input);
-
-      const response = await fetch("/chatbot", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `user_input=${encodeURIComponent(input)}`,
-      });
-
-      const data = await response.json();
-      addMessage("bot", data.message);
-      userInput.value = "";
-    });
-
-    function addMessage(sender, text) {
-      const messageDiv = document.createElement("div");
-      messageDiv.className = sender === "user" ? "user-message" : "bot-message";
-      messageDiv.innerHTML = (sender === "bot" ? "🤖 " : "🧍 ") + text;
-      chatBox.appendChild(messageDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function reiniciarChat() {
-      chatBox.innerHTML = '<div class="bot-message">🤖 ¡Hola! Soy Nutribot. ¿Querés empezar tu plan nutricional? Escribí <strong>“sí”</strong> para comenzar. 🍎</div>';
-    }
-
-    function mostrarTabla() {
-      const tabla = document.getElementById("tabla-calorias");
-      tabla.style.display = tabla.style.display === "none" ? "block" : "none";
-    }
-  </script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
