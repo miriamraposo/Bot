@@ -6,7 +6,7 @@ import re
 
 app = Flask(__name__)
 
-# Base de datos de menús
+# Base de datos de menús (conserva tus variables exactas)
 MENUS = {
     "bajar": {
         "vegetariano": [
@@ -96,16 +96,29 @@ CALORIAS = {
     "Semillas de girasol": 584
 }
 
-# Nuevo: Base de datos de suplementos (Fase 1)
+# Fase 1 (conservado)
 SUPLEMENTOS = {
     "bajar": "🔹 Proteínas en polvo para saciedad, BCAA en ayunas.",
     "aumentar": "🔹 Creatina (5g/día), proteína en polvo y carbohidratos post-entreno para aumentar masa muscular.",
     "mantener": "🔹 Multivitamínico, omega-3 y proteínas para mantener la salud y la masa muscular."
 }
 
+# Fase 2: Base de ingredientes
+INGREDIENTES_BASE = {
+    "smoothie": ["plátano", "espinaca", "leche vegetal"],
+    "ensalada": ["quinoa", "tomate", "aguacate"],
+    "sopa": ["lentejas", "zanahoria", "cebolla"],
+    "huevos": ["huevos", "pan integral", "tomate"],
+    "tofu": ["tofu", "brócoli", "arroz integral"],
+    "pollo": ["pollo", "arroz", "ensalada"],
+    "pescado": ["merluza", "patatas", "brócoli"],
+    "pasta": ["pasta", "tomate", "albahaca"],
+    "wrap": ["pan integral", "hummus", "pepino"],
+    "batido": ["mango", "espinaca", "leche de almendra"]
+}
+
 def clean_text_for_speech(text):
     """Elimina emojis y tags HTML para el texto a voz"""
-    # Eliminar emojis
     emoji_pattern = re.compile("["
         u"\U0001F600-\U0001F64F"  # emoticons
         u"\U0001F300-\U0001F5FF"  # símbolos & pictogramas
@@ -113,7 +126,6 @@ def clean_text_for_speech(text):
         u"\U0001F1E0-\U0001F1FF"  # banderas (iOS)
                            "]+", flags=re.UNICODE)
     text = emoji_pattern.sub(r'', text)
-    # Eliminar tags HTML
     text = re.sub(r'<[^>]+>', '', text)
     return text.strip()
 
@@ -121,12 +133,41 @@ def clean_text_for_speech(text):
 def home():
     return render_template('index.html')
 
+# Fase 2: Endpoint para lista de compra
+@app.route('/get_shopping_list', methods=['POST'])
+def get_shopping_list():
+    goal = request.form['goal']
+    diet = request.form['diet']
+    items = set()
+    
+    for meal in MENUS[goal][diet]:
+        for keyword, ingredientes in INGREDIENTES_BASE.items():
+            if keyword in meal.lower():
+                items.update(ingredientes)
+    
+    return jsonify({"items": list(items)})
+
+# Fase 2: Función de análisis de comidas
+def analyze_meal(meal_desc):
+    meal_desc = meal_desc.lower()
+    tips = []
+    
+    if "frito" in meal_desc or "empanizado" in meal_desc:
+        tips.append("🔹 Considera cocinar al horno o vapor en lugar de frito.")
+    if "arroz" in meal_desc or "pasta" in meal_desc:
+        tips.append("🔹 Controla las porciones de carbohidratos (1 taza cocida aprox).")
+    if "verduras" not in meal_desc and "ensalada" not in meal_desc:
+        tips.append("🔹 Añade verduras para aumentar fibra y nutrientes.")
+    if not tips:
+        tips.append("🔹 ¡Buena elección! Equilibra con proteínas y verduras.")
+    
+    return "🍽️ <strong>Análisis nutricional:</strong><br>" + "<br>".join(tips)
+
 @app.route('/get_response', methods=['POST'])
 def get_response():
     user_message = request.form.get('message', '').lower().strip()
     step = request.form.get('step', '')
     
-    # Manejar reinicio de conversación
     if user_message == 'reiniciar':
         return {
             "response": "¡Conversación reiniciada! 👋 ¿Cómo te llamas?",
@@ -134,7 +175,6 @@ def get_response():
             "reset": True
         }
 
-    # Flujo de conversación
     if "hola" in user_message and not step:
         return {
             "response": "¡Hola! 👋 ¿Cómo te llamas?",
@@ -180,7 +220,6 @@ def get_response():
             if height <= 0 or height > 250:
                 return {"response": "Por favor ingresa una altura válida (1-250 cm)", "step": step}
             
-            # Calcular IMC si tenemos peso y altura
             weight = float(request.form.get('weight', 0))
             if weight > 0:
                 height_m = height / 100
@@ -208,7 +247,6 @@ def get_response():
         goal = request.form.get('goal')
         menu = MENUS[goal][user_message]
         
-        # Calcular IMC para mostrarlo con el menú
         weight = float(request.form.get('weight', 0))
         height = float(request.form.get('height', 0))
         if weight > 0 and height > 0:
@@ -226,7 +264,6 @@ def get_response():
         else:
             imc_message = ""
         
-        # Nuevo: Cálculo de macronutrientes (Fase 1)
         if weight > 0:
             if goal == "bajar":
                 protein = weight * 1.6
@@ -234,7 +271,7 @@ def get_response():
             elif goal == "aumentar":
                 protein = weight * 2.2
                 carbs = weight * 3
-            else:  # mantener
+            else:
                 protein = weight * 1.8
                 carbs = weight * 2.2
             fat = weight * 0.8
@@ -259,8 +296,20 @@ def get_response():
             "diet": user_message
         }
     
+    # Fase 2: Nuevo paso para análisis de comidas
+    elif "analizar comida" in user_message:
+        return {
+            "response": "Describe tu plato principal (ej: 'ensalada de quinoa con pollo')",
+            "step": "analyze_meal"
+        }
+    elif step == "analyze_meal":
+        return {
+            "response": analyze_meal(user_message),
+            "step": step
+        }
+    
     else:
-        return {"response": "No entendí. ¿Podrías repetir o decir 'reiniciar' para comenzar de nuevo?", "step": step}
+        return {"response": "No entendí. ¿Podrías repetir o decir 'reiniciar'?", "step": step}
 
 @app.route('/get_calories')
 def get_calories():

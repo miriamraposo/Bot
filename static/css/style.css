@@ -175,6 +175,55 @@ button {
     display: none !important;
 }
 
+:root {
+    --verde: #4CAF50;
+    --naranja: #FF9800;
+    --amarillo: #FFC107;
+    --rosa: #E91E63;
+    --blanco: #FFFFFF;
+    --gris: #F5F5F5;
+    --negro: #333333;
+}
+
+/* Tus estilos existentes se mantienen igual hasta el final */
+
+/* Fase 2: Nuevos estilos agregados al final */
+.btn-action {
+    background-color: var(--verde);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-action:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.meal-analysis {
+    background-color: var(--gris);
+    border-left: 4px solid var(--verde);
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+/* Asegurar que los nuevos elementos sean responsive */
+@media (max-width: 480px) {
+    .btn-action {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

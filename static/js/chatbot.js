@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('message', message);
         formData.append('step', currentStep);
 
-        // Enviar datos adicionales
         for (const key in userData) {
             formData.append(key, userData[key]);
         }
@@ -74,10 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleResponse(data) {
         addBotMessage(data.response);
         
-        // Actualizar paso actual
         if (data.step) currentStep = data.step;
         
-        // Guardar datos del usuario
         if (data.name) userData.name = data.name;
         if (data.age) userData.age = data.age;
         if (data.weight) userData.weight = data.weight;
@@ -85,12 +82,34 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data.goal) userData.goal = data.goal;
         if (data.diet) userData.diet = data.diet;
 
-        // Mostrar menú si está disponible
+        // Fase 2: Mostrar botón de lista de compra
         if (data.show_menu) {
-            document.getElementById('menu-display').innerHTML = data.response;
-            nutritionData.classList.remove('oculto');
+            const shopBtn = document.createElement('button');
+            shopBtn.className = 'btn-action';
+            shopBtn.textContent = '🛒 Generar lista de compra';
+            shopBtn.onclick = () => generateShoppingList(userData.goal, userData.diet);
+            chatBox.appendChild(shopBtn);
             showMenuBtn.classList.remove('oculto');
         }
+    }
+
+    // Fase 2: Función para lista de compra
+    function generateShoppingList(goal, diet) {
+        fetch('/get_shopping_list', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `goal=${goal}&diet=${diet}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            addBotMessage("🛍️ <strong>Lista de compra:</strong><br>- " + data.items.join("<br>- "));
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            addBotMessage("⚠️ Error al generar la lista de compra");
+        });
     }
 
     function showCalories() {
