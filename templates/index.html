@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriBot 🤖 - Asistente Nutricional</title>
+    <title>NutriBot- Tu Asistente Nutricional</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="title-container">
+            <div class="header-top">
                 <h1>NutriBot <span class="emoji">🤖</span></h1>
-                <button id="reset-btn" class="btn-warning">Reiniciar</button>
+                <button id="reset-btn" class="btn-warning">↻ Reiniciar</button>
             </div>
-            <p class="subtitle">Tu plan nutricional personalizado</p>
+            <p class="subtitle">Plan nutricional personalizado</p>
             <img src="{{ url_for('static', filename='images/comida_saludable.jpg') }}" 
                  alt="Alimentos saludables" 
                  class="responsive-image">
@@ -36,15 +36,27 @@
             <button id="show-menu" class="btn-action oculto">📋 Ver Mi Menú</button>
         </div>
 
-        <div id="nutrition-data" class="nutrition-container oculto">
-            <div id="menu-display" class="nutrition-box"></div>
-            <div id="calories-display" class="nutrition-box"></div>
+        <div id="nutrition-data" class="oculto">
+            <div id="menu-display" class="menu-display"></div>
+            <div class="table-container">
+                <h3>Tabla Nutricional (por 100g)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Alimento</th>
+                            <th>Calorías</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calories-data"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 </html>
+
 
 
 
