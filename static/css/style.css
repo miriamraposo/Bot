@@ -31,7 +31,7 @@ body {
     overflow: hidden;
 }
 
-.title-container {
+.header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -136,19 +136,6 @@ button {
     margin-bottom: 20px;
 }
 
-.nutrition-container {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.nutrition-box {
-    flex: 1;
-    padding: 15px;
-    background-color: var(--gris);
-    border-radius: 10px;
-}
-
 .user-message, .bot-message {
     margin: 10px 0;
     padding: 12px 15px;
@@ -175,57 +162,45 @@ button {
     display: none !important;
 }
 
-:root {
-    --verde: #4CAF50;
-    --naranja: #FF9800;
-    --amarillo: #FFC107;
-    --rosa: #E91E63;
-    --blanco: #FFFFFF;
-    --gris: #F5F5F5;
-    --negro: #333333;
-}
-
-/* Tus estilos existentes se mantienen igual hasta el final */
-
-/* Fase 2: Nuevos estilos agregados al final */
-.btn-action {
-    background-color: var(--verde);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    margin: 10px 0;
+.imc-display {
+    background-color: #e3f2fd;
+    padding: 10px;
     border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s;
-    display: block;
-    width: 100%;
-    text-align: center;
+    margin: 10px 0;
+    border-left: 4px solid #2196F3;
 }
 
-.btn-action:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
-
-.meal-analysis {
-    background-color: var(--gris);
-    border-left: 4px solid var(--verde);
+/* Fase 2 y 3: Estilos nuevos */
+.recompensa {
+    background-color: #e3f2fd;
+    border-left: 4px solid #2196F3;
     padding: 12px;
     margin: 10px 0;
     border-radius: 0 8px 8px 0;
+    animation: fadeIn 0.5s;
 }
 
-/* Asegurar que los nuevos elementos sean responsive */
-@media (max-width: 480px) {
-    .btn-action {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-    }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
+.ejercicios-list {
+    margin: 10px 0;
+    padding-left: 20px;
+}
 
-/* Responsive Design */
+.recording {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .container {
         padding: 15px;
@@ -235,8 +210,13 @@ button {
         max-height: 200px;
     }
     
-    .nutrition-container {
+    .action-buttons {
         flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-action {
+        width: 100%;
     }
 }
 
@@ -257,47 +237,4 @@ button {
         width: 50%;
     }
 }
-
-/* (Mantengo todos los estilos existentes y agrego estos nuevos) */
-
-.imc-display {
-    background-color: #e3f2fd;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 15px;
-    border-left: 4px solid #2196F3;
-}
-
-.menu-display {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #dee2e6;
-}
-
-/* Mejoras para el reconocimiento de voz */
-.recording {
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
-}
-
-/* Mejoras responsive */
-@media (max-width: 480px) {
-    .header-top {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    #reset-btn {
-        margin-top: 10px;
-        align-self: flex-end;
-    }
-}
-
 

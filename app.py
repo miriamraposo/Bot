@@ -6,7 +6,7 @@ import re
 
 app = Flask(__name__)
 
-# Base de datos de menús (conserva tus variables exactas)
+# Base de datos de menús (original conservado)
 MENUS = {
     "bajar": {
         "vegetariano": [
@@ -71,39 +71,24 @@ MENUS = {
 }
 
 CALORIAS = {
-    "Manzana": 52,
-    "Pollo": 165,
-    "Arroz": 130,
-    "Lentejas": 116,
-    "Tofu": 76,
-    "Aguacate": 160,
-    "Plátano": 89,
-    "Tomate": 18,
-    "Quinoa": 120,
-    "Brócoli": 55,
-    "Pescado": 206,
-    "Espinaca": 23,
-    "Nueces": 654,
-    "Yogur": 59,
-    "Pan integral": 247,
-    "Pasta": 131,
-    "Zanahoria": 41,
-    "Champiñones": 22,
-    "Hummus": 166,
-    "Queso": 402,
-    "Avena": 389,
-    "Chía": 486,
-    "Semillas de girasol": 584
+    "Manzana": 52, "Pollo": 165, "Arroz": 130,
+    "Lentejas": 116, "Tofu": 76, "Aguacate": 160,
+    "Plátano": 89, "Tomate": 18, "Quinoa": 120,
+    "Brócoli": 55, "Pescado": 206, "Espinaca": 23,
+    "Nueces": 654, "Yogur": 59, "Pan integral": 247,
+    "Pasta": 131, "Zanahoria": 41, "Champiñones": 22,
+    "Hummus": 166, "Queso": 402, "Avena": 389,
+    "Chía": 486, "Semillas de girasol": 584
 }
 
-# Fase 1 (conservado)
+# Fase 1: Suplementos
 SUPLEMENTOS = {
     "bajar": "🔹 Proteínas en polvo para saciedad, BCAA en ayunas.",
-    "aumentar": "🔹 Creatina (5g/día), proteína en polvo y carbohidratos post-entreno para aumentar masa muscular.",
-    "mantener": "🔹 Multivitamínico, omega-3 y proteínas para mantener la salud y la masa muscular."
+    "aumentar": "🔹 Creatina (5g/día), proteína en polvo y carbohidratos post-entreno.",
+    "mantener": "🔹 Multivitamínico, omega-3 y proteínas para mantener la salud."
 }
 
-# Fase 2: Base de ingredientes
+# Fase 2: Ingredientes
 INGREDIENTES_BASE = {
     "smoothie": ["plátano", "espinaca", "leche vegetal"],
     "ensalada": ["quinoa", "tomate", "aguacate"],
@@ -115,6 +100,25 @@ INGREDIENTES_BASE = {
     "pasta": ["pasta", "tomate", "albahaca"],
     "wrap": ["pan integral", "hummus", "pepino"],
     "batido": ["mango", "espinaca", "leche de almendra"]
+}
+
+# Fase 3: Ejercicios
+EJERCICIOS = {
+    "bajar": [
+        "🏃‍♂️ Cardio 30-45 min (3-4x/semana)",
+        "🤸‍♀️ HIIT 20 min (2x/semana)",
+        "🧘‍♀️ Yoga para flexibilidad (1x/semana)"
+    ],
+    "aumentar": [
+        "🏋️‍♂️ Pesas 4x12 rep (4x/semana)",
+        "🦵 Descansos 90s entre series",
+        "💪 Ejercicios compuestos (sentadilla, press banca)"
+    ],
+    "mantener": [
+        "🚴‍♂️ Ciclo 30 min (3x/semana)",
+        "🏊‍♀️ Natación 45 min (2x/semana)",
+        "🤸‍♂️ Entrenamiento funcional (2x/semana)"
+    ]
 }
 
 def clean_text_for_speech(text):
@@ -133,7 +137,7 @@ def clean_text_for_speech(text):
 def home():
     return render_template('index.html')
 
-# Fase 2: Endpoint para lista de compra
+# Fase 2: Lista de compra
 @app.route('/get_shopping_list', methods=['POST'])
 def get_shopping_list():
     goal = request.form['goal']
@@ -147,7 +151,7 @@ def get_shopping_list():
     
     return jsonify({"items": list(items)})
 
-# Fase 2: Función de análisis de comidas
+# Fase 2: Análisis de comidas
 def analyze_meal(meal_desc):
     meal_desc = meal_desc.lower()
     tips = []
@@ -286,17 +290,24 @@ def get_response():
             )
         else:
             macros_msg = ""
-            
+        
+        # Fase 3: Añadir ejercicios
+        ejercicios_msg = (
+            f"🏋️‍♂️ <strong>Rutina recomendada:</strong><br>" + 
+            "<br>".join(EJERCICIOS.get(goal, [])) + "<br><br>"
+        )
+        
         return {
             "response": (
                 f"🍽️ <strong>Menú recomendado:</strong><br>" + "<br>".join(menu) + 
-                f"<br><br>{imc_message}<br>{macros_msg}"
+                f"<br><br>{imc_message}<br>{ejercicios_msg}{macros_msg}"
             ),
             "show_menu": True,
-            "diet": user_message
+            "diet": user_message,
+            "goal": goal  # Para recompensas
         }
     
-    # Fase 2: Nuevo paso para análisis de comidas
+    # Fase 2: Análisis de comidas
     elif "analizar comida" in user_message:
         return {
             "response": "Describe tu plato principal (ej: 'ensalada de quinoa con pollo')",

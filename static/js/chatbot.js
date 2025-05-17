@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', function() {
     let userData = {};
     let recognition = null;
 
+    // Recompensas (Fase 3)
+    const RECOMPENSAS = {
+        3: "🎉 ¡Has planificado 3 comidas! Beneficio: Clase de spinning gratis.",
+        5: "🎁 ¡5 comidas saludables! Descarga nuestra guía de recetas.",
+        7: "🏆 ¡7 comidas! Obtén un 20% de descuento en suplementos."
+    };
+
     // Iniciar chat
     initChat();
 
@@ -31,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function resetConversation() {
+        localStorage.removeItem('meals_planned');
         sendMessageToServer('reiniciar');
     }
 
@@ -82,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data.goal) userData.goal = data.goal;
         if (data.diet) userData.diet = data.diet;
 
-        // Fase 2: Mostrar botón de lista de compra
+        // Fase 2: Botón de lista de compra
         if (data.show_menu) {
             const shopBtn = document.createElement('button');
             shopBtn.className = 'btn-action';
@@ -91,9 +99,24 @@ document.addEventListener('DOMContentLoaded', function() {
             chatBox.appendChild(shopBtn);
             showMenuBtn.classList.remove('oculto');
         }
+
+        // Fase 3: Sistema de recompensas
+        if (data.diet) {
+            const count = parseInt(localStorage.getItem('meals_planned') || 0) + 1;
+            localStorage.setItem('meals_planned', count);
+            
+            if (RECOMPENSAS[count]) {
+                const rewardDiv = document.createElement('div');
+                rewardDiv.className = 'recompensa';
+                rewardDiv.innerHTML = RECOMPENSAS[count];
+                chatBox.appendChild(rewardDiv);
+                scrollToBottom();
+                speak(RECOMPENSAS[count]);
+            }
+        }
     }
 
-    // Fase 2: Función para lista de compra
+    // Fase 2: Lista de compra
     function generateShoppingList(goal, diet) {
         fetch('/get_shopping_list', {
             method: 'POST',
