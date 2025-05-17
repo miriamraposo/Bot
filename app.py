@@ -10,98 +10,97 @@ app = Flask(__name__)
 MENUS = {
     "bajar": {
         "vegetariano": [
-            "Desayuno: Smoothie de espinaca y plátano 🥤",
-            "Almuerzo: Ensalada de quinoa y aguacate 🥗",
-            "Cena: Sopas de lentejas y verduras 🍲",
-            "Snack: Palitos de zanahoria y hummus 🥕"
+            "Desayuno: Smoothie de plátano, espinaca y leche vegetal ",
+            "Almuerzo: Ensalada de quinoa, tomate y aguacate ",
+            "Cena: Sopa de lentejas, zanahoria y cebolla ",
+            "Snack: Frutas mixtas, nueces y yogur natural "
         ],
         "vegano": [
-            "Desayuno: Tostadas con aguacate y tomate 🥑🍅",
-            "Almuerzo: Buddha bowl con tofu y vegetales 🌱",
-            "Cena: Curry de garbanzos y espinacas 🍛",
-            "Snack: Frutos secos y semillas 🌰"
+            "Desayuno: Tostadas de aguacate, tomate y semillas de chía ",
+            "Almuerzo: Buddha bowl de arroz integral, garbanzos y pepino ",
+            "Cena: Curry de garbanzos, calabaza y espinaca ",
+            "Snack: Hummus con zanahorias, apio y pan integral "
         ],
         "tradicional": [
-            "Desayuno: Huevos revueltos con tomate y pan 🍳",
-            "Almuerzo: Pechuga de pollo a la parrilla 🍗",
-            "Cena: Merluza al horno con verduras 🐟",
-            "Snack: Yogurt natural con fruta 🍓"
+            "Desayuno: Huevos, pan integral y tomate ",
+            "Almuerzo: Pechuga de pollo, arroz y ensalada de huevo con tomate ",
+            "Cena: Merluza, patatas y brócoli ",
+            "Snack: Queso, galletas y fruta "
         ]
     },
     "mantener": {
         "vegetariano": [
-            "Desayuno: Frutas frescas y yogurt 🍓",
-            "Almuerzo: Wrap de hummus con verduras 🥙",
-            "Cena: Pasta con pesto y tomate 🍝",
-            "Snack: Manzana con mantequilla de maní 🍏🥜"
+            "Desayuno: Frutas, avena y nueces ",
+            "Almuerzo: Wrap de hummus, pepino y zanahoria ",
+            "Cena: Pasta con tomate, albahaca y aceitunas ",
+            "Snack: Yogur natural, miel y semillas de chía "
         ],
         "vegano": [
-            "Desayuno: Avena con frutas y semillas 🥣",
-            "Almuerzo: Falafel con ensalada y pan pita 🌯",
-            "Cena: Salteado de tofu y vegetales 🍜",
-            "Snack: Batido de banana y espinaca 🍌"
+            "Desayuno: Avena con plátano, semillas de chía y leche de soja ",
+            "Almuerzo: Falafel, arroz integral y ensalada de pepino y tomate ",
+            "Cena: Tofu, espinaca y champiñones ",
+            "Snack: Barritas energéticas, frutos secos y fruta fresca "
         ],
         "tradicional": [
-            "Desayuno: Tostadas integrales y mermelada 🍞",
-            "Almuerzo: Pescado a la plancha con limón 🐠",
-            "Cena: Roast de carne magra 🥩",
-            "Snack: Barras de cereal caseras 🍫"
+            "Desayuno: Tostadas, huevo y aguacate ",
+            "Almuerzo: Pescado, arroz y ensalada de col ",
+            "Cena: Carne de res, patatas y verduras al vapor ",
+            "Snack: Queso, jamón y fruta "
         ]
     },
     "aumentar": {
         "vegetariano": [
-            "Desayuno: Batido de mango y espinaca 🥭",
-            "Almuerzo: Lentejas con verduras y arroz 🥘",
-            "Cena: Tofu marinado y salteado 🍳",
-            "Snack: Chips de kale al horno 🥬"
+            "Desayuno: Batido de mango, espinaca y leche de almendra ",
+            "Almuerzo: Lentejas, arroz y ensalada de huevo con tomate ",
+            "Cena: Tofu salteado, brócoli y arroz integral ",
+            "Snack: Nueces, plátano y yogur vegano "
         ],
         "vegano": [
-            "Desayuno: Pudding de chía y fruta 🍮",
-            "Almuerzo: Seitan con salsa barbacoa 🌭",
-            "Cena: Hamburguesa vegana con guarniciones 🍔",
-            "Snack: Fruta fresca y nueces 🥭🌰"
+            "Desayuno: Cereal con semillas, frutos secos y leche de avena ",
+            "Almuerzo: Seitan, arroz, calabaza y tomate ",
+            "Cena: Hamburguesa de legumbres, ensalada de la huerta y pan integral ",
+            "Snack: Frutos secos, fruta fresca y barritas naturales "
         ],
         "tradicional": [
-            "Desayuno: Tortilla de espinaca y queso 🥚",
-            "Almuerzo: Pollo asado con hierbas 🍗",
-            "Cena: Salmón a la plancha con puré 🐟",
-            "Snack: Queso y embutidos en pequeñas porciones 🧀"
+            "Desayuno: Tortilla, pan tostado y tomate ",
+            "Almuerzo: Pollo, arroz, y ensalada de huevo y tomate ",
+            "Cena: Salmón, patatas y espárragos ",
+            "Snack: Chips de patata, queso y fruta "
         ]
     }
 }
 
 CALORIAS = {
     "Manzana": 52,
-    "Plátano": 89,
-    "Naranja": 47,
-    "Fresa": 32,
-    "Pera": 57,
     "Pollo": 165,
-    "Carne de res": 250,
-    "Pescado": 206,
-    "Huevos": 68,
-    "Arroz blanco": 130,
-    "Arroz integral": 111,
+    "Arroz": 130,
     "Lentejas": 116,
-    "Garbanzos": 164,
     "Tofu": 76,
     "Aguacate": 160,
-    "Queso mozzarella": 280,
-    "Yogur natural": 59,
-    "Pan integral": 247,
-    "Almendras": 579,
-    "Cacahuetes": 567,
-    "Aceite de oliva": 119,
-    "Cacao puro en polvo": 228,
-    "Chía": 486,
-    "Semillas de girasol": 585,
-    "Zanahoria": 41,
-    "Brócoli": 55,
-    "Espinaca": 23,
-    "Pepino": 16,
+    "Plátano": 89,
     "Tomate": 18,
-    "Papas": 77,
-    "Batata": 86
+    "Quinoa": 120,
+    "Brócoli": 55,
+    "Pescado": 206,
+    "Espinaca": 23,
+    "Nueces": 654,
+    "Yogur": 59,
+    "Pan integral": 247,
+    "Pasta": 131,
+    "Zanahoria": 41,
+    "Champiñones": 22,
+    "Hummus": 166,
+    "Queso": 402,
+    "Avena": 389,
+    "Chía": 486,
+    "Semillas de girasol": 584
+}
+
+# Nuevo: Base de datos de suplementos (Fase 1)
+SUPLEMENTOS = {
+    "bajar": "🔹 Proteínas en polvo para saciedad, BCAA en ayunas.",
+    "aumentar": "🔹 Creatina (5g/día), proteína en polvo y carbohidratos post-entreno para aumentar masa muscular.",
+    "mantener": "🔹 Multivitamínico, omega-3 y proteínas para mantener la salud y la masa muscular."
 }
 
 def clean_text_for_speech(text):
@@ -153,33 +152,33 @@ def get_response():
         try:
             age = int(user_message)
             if age <= 0 or age > 120:
-                return {"response": "Por favor ingresa una edad válida (1-120)"}
+                return {"response": "Por favor ingresa una edad válida (1-120)", "step": step}
             return {
                 "response": "¿Cuál es tu peso en kg? ",
                 "step": "get_weight",
                 "age": user_message
             }
         except ValueError:
-            return {"response": "Por favor ingresa un número válido para la edad"}
+            return {"response": "Por favor ingresa un número válido para la edad", "step": step}
     
     elif step == "get_weight":
         try:
             weight = float(user_message)
             if weight <= 0 or weight > 300:
-                return {"response": "Por favor ingresa un peso válido (1-300 kg)"}
+                return {"response": "Por favor ingresa un peso válido (1-300 kg)", "step": step}
             return {
-                "response": "¿Cuál es tu altura en cm?",
+                "response": "¿Cuál es tu altura en cm? ",
                 "step": "get_height",
                 "weight": user_message
             }
         except ValueError:
-            return {"response": "Por favor ingresa un número válido para el peso"}
+            return {"response": "Por favor ingresa un número válido para el peso", "step": step}
     
     elif step == "get_height":
         try:
             height = float(user_message)
             if height <= 0 or height > 250:
-                return {"response": "Por favor ingresa una altura válida (1-250 cm)"}
+                return {"response": "Por favor ingresa una altura válida (1-250 cm)", "step": step}
             
             # Calcular IMC si tenemos peso y altura
             weight = float(request.form.get('weight', 0))
@@ -196,7 +195,7 @@ def get_response():
                 "height": user_message
             }
         except ValueError:
-            return {"response": "Por favor ingresa un número válido para la altura"}
+            return {"response": "Por favor ingresa un número válido para la altura", "step": step}
     
     elif user_message in ["bajar", "mantener", "aumentar"]:
         return {
@@ -226,15 +225,42 @@ def get_response():
                 imc_message += "Obesidad</div>"
         else:
             imc_message = ""
+        
+        # Nuevo: Cálculo de macronutrientes (Fase 1)
+        if weight > 0:
+            if goal == "bajar":
+                protein = weight * 1.6
+                carbs = weight * 1.5
+            elif goal == "aumentar":
+                protein = weight * 2.2
+                carbs = weight * 3
+            else:  # mantener
+                protein = weight * 1.8
+                carbs = weight * 2.2
+            fat = weight * 0.8
+            
+            macros_msg = (
+                f"📊 <strong>Macros diarios (aprox):</strong><br>"
+                f"Proteína: {protein:.1f}g<br>"
+                f"Carbohidratos: {carbs:.1f}g<br>"
+                f"Grasas: {fat:.1f}g<br>"
+                f"💧 Toma al menos {int(weight * 35)}ml de agua al día<br><br>"
+                f"{SUPLEMENTOS.get(goal, '')}"
+            )
+        else:
+            macros_msg = ""
             
         return {
-            "response": f"🍽️ <strong>Menú recomendado:</strong><br>" + "<br>".join(menu) + "<br><br>" + imc_message,
+            "response": (
+                f"🍽️ <strong>Menú recomendado:</strong><br>" + "<br>".join(menu) + 
+                f"<br><br>{imc_message}<br>{macros_msg}"
+            ),
             "show_menu": True,
             "diet": user_message
         }
     
     else:
-        return {"response": "No entendí. ¿Podrías repetir o decir 'reiniciar' para comenzar de nuevo?"}
+        return {"response": "No entendí. ¿Podrías repetir o decir 'reiniciar' para comenzar de nuevo?", "step": step}
 
 @app.route('/get_calories')
 def get_calories():
