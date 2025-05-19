@@ -3,97 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NutriBot Pro - Asistente Nutricional Inteligente</title>
+    <title>NutriBot - Fase 1</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="header-top">
-                <div class="logo-container">
-                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="NutriBot Logo" class="logo">
-                    <h1>NutriBot <span class="emoji">🤖</span></h1>
-                </div>
-                <button id="reset-btn" class="btn-warning" title="Reiniciar conversación">
-                    <i class="fas fa-sync-alt"></i> Reiniciar
-                </button>
-            </div>
-            <p class="subtitle">Tu plan nutricional personalizado</p>
-            <div class="header-image">
+            <h1>NutriBot <span class="emoji">🤖</span></h1>
+            <p class="subtitle">Asistente nutricional - Fase 1</p>
+        </header>
+    <div class="header-image">
                 <img src="{{ url_for('static', filename='images/comida_saludable.jpg') }}" 
                      alt="Alimentos saludables" 
                      class="responsive-image"
                      loading="lazy">
             </div>
-        </header>
-
-        <main>
-            <div class="chat-container">
-                <div id="chat-box" class="chat-box"></div>
-                <div class="input-group">
-                    <input type="text" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="off" aria-label="Escribe tu mensaje">
-                    <div class="button-group">
-                        <button id="voice-btn" class="btn-secondary" title="Usar voz" aria-label="Reconocimiento de voz">
-                            <i class="fas fa-microphone"></i>
-                        </button>
-                        <button id="send-btn" class="btn-primary" aria-label="Enviar mensaje">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
+        <div class="chat-container">
+            <div id="chat-box" class="chat-box"></div>
+            <div class="input-group">
+                <input type="text" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="off">
+                <button id="send-btn" class="btn-primary">Enviar</button>
+                <button id="voice-btn" class="btn-secondary">🎤</button>
             </div>
+        </div>
 
-            <div class="action-buttons">
-                <button id="show-calories" class="btn-action">
-                    <i class="fas fa-fire"></i> Ver Calorías
-                </button>
-                <button id="show-menu" class="btn-action oculto">
-                    <i class="fas fa-utensils"></i> Ver Mi Menú
-                </button>
-                <button id="video-options" class="btn-action oculto">
-                    <i class="fas fa-video"></i> Ver Videos
-                </button>
-            </div>
+        <div class="action-buttons">
+            <button id="show-calories" class="btn-action">📊 Calorías</button>
+            <button id="reset-btn" class="btn-warning">↻ Reiniciar</button>
+        </div>
 
-            <div id="nutrition-data" class="nutrition-data oculto">
-                <div id="menu-display" class="menu-display"></div>
-                <div class="table-container">
-                    <h3><i class="fas fa-table"></i> Tabla Nutricional (por 100g)</h3>
-                    <div class="table-scroll">
-                        <table aria-label="Tabla de calorías de alimentos">
-                            <thead>
-                                <tr>
-                                    <th>Alimento</th>
-                                    <th>Calorías</th>
-                                </tr>
-                            </thead>
-                            <tbody id="calories-data"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <div id="video-modal" class="modal oculto" aria-hidden="true">
-            <div class="modal-content">
-                <span class="close-modal" title="Cerrar">&times;</span>
-                <h3><i class="fas fa-video"></i> Selecciona un video</h3>
-                <div class="video-options">
-                    <button id="exercise-video" class="btn-video">
-                        <i class="fas fa-dumbbell"></i> Rutina de Ejercicios
-                    </button>
-                    <button id="recipe-video" class="btn-video">
-                        <i class="fas fa-utensils"></i> Receta Recomendada
-                    </button>
-                </div>
-            </div>
+        <div id="nutrition-data" class="oculto">
+            <div id="menu-display"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Alimento</th>
+                        <th>Calorías</th>
+                    </tr>
+                </thead>
+                <tbody id="calories-data"></tbody>
+            </table>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/chatbot.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 </html>
 
