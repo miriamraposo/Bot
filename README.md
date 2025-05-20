@@ -43,6 +43,11 @@ nutribot/
 │   └── index.html          # Interfaz web principal
 ├── static/
 │   └── audios/             # Carpeta de salida para audios generados
+│   └── css/             
+│       └── style.css       # Hoja de estilos aplicados
+│   └── imagenes/           # Carpeta de salida para imagenes utilizadas
+│   └── js/                 
+│       └── chatbot.js      # Script con la estructura funcional del chatbot
 └── README.md               # Este archivo
 ```
 
