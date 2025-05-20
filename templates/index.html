@@ -14,12 +14,15 @@
             <h1>NutriBot <span class="emoji">🤖</span></h1>
             <p class="subtitle">Asistente nutricional - Fase 1</p>
         </header>
-    <div class="header-image">
-                <img src="{{ url_for('static', filename='images/comida_saludable.jpg') }}" 
-                     alt="Alimentos saludables" 
-                     class="responsive-image"
-                     loading="lazy">
-            </div>
+
+        <!-- Imagen saludable -->
+        <div class="header-image">
+            <img src="{{ url_for('static', filename='images/comida_saludable.jpg') }}" 
+                 alt="Alimentos saludables" 
+                 class="responsive-image"
+                 loading="lazy">
+        </div>
+
         <div class="chat-container">
             <div id="chat-box" class="chat-box"></div>
             <div class="input-group">
@@ -32,16 +35,14 @@
         <div class="action-buttons">
             <button id="show-calories" class="btn-action">📊 Calorías</button>
             <button id="reset-btn" class="btn-warning">↻ Reiniciar</button>
+            <button id="test-btn" class="btn-secondary">🧪 Test</button>
         </div>
 
         <div id="nutrition-data" class="oculto">
             <div id="menu-display"></div>
             <table>
                 <thead>
-                    <tr>
-                        <th>Alimento</th>
-                        <th>Calorías</th>
-                    </tr>
+                    <tr><th>Alimento</th><th>Calorías</th></tr>
                 </thead>
                 <tbody id="calories-data"></tbody>
             </table>
@@ -51,18 +52,3 @@
     <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
