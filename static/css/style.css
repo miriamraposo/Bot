@@ -2,7 +2,7 @@
     --primary: #4CAF50;
     --primary-dark: #388E3C;
     --secondary: #FF9800;
-    --accent: #E91E63;
+    --accent: #00BCD4;
     --light: #FFFFFF;
     --light-gray: #F5F5F5;
     --medium-gray: #E0E0E0;
@@ -90,10 +90,51 @@ h1 {
     border: 3px solid var(--secondary);
     transition: var(--transition);
 }
+.responsive-logo {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 3px solid var(--secondary);
+    transition: var(--transition);
+}
 
 .responsive-image:hover {
     transform: scale(1.01);
 }
+.input-group-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reset-group {
+  width: 100%;
+}
+
+#reset-btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  padding: 12px;
+}
+
+.input-group input,
+.input-group button {
+    height: 50px;
+}
+
+.input-group input {
+    border-radius: 12px;
+}
+.input-group button {
+    margin-top: 0;
+}
+
 
 /* Chat container */
 .chat-container {
@@ -155,7 +196,6 @@ button {
     background-color: var(--primary);
     color: white;
 }
-
 .btn-primary:hover {
     background-color: var(--primary-dark);
 }
@@ -165,29 +205,28 @@ button {
     color: white;
     padding: 12px;
 }
-
 .btn-secondary:hover {
     background-color: #F57C00;
 }
 
 .btn-warning {
-    background-color: #F44336;
+    background-color: #FF7043;
     color: white;
 }
 
 .btn-warning:hover {
-    background-color: #D32F2F;
+    background-color:#FF7043;
 }
 
 .btn-action {
-    background-color: var(--accent);
+      background-color: var(--accent);
     color: white;
     width: 100%;
     justify-content: center;
 }
 
 .btn-action:hover {
-    background-color: #C2185B;
+    background-color: #0097A7;
 }
 
 .action-buttons {

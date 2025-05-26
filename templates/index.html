@@ -11,8 +11,12 @@
 <body>
     <div class="container">
         <header>
-            <h1>NutriBot <span class="emoji">🤖</span></h1>
-            <p class="subtitle">Asistente nutricional - Fase 1</p>
+            <div class="header-image">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" 
+                    alt="logo NutriBot" 
+                    class="responsive-logo"
+                    loading="lazy">
+            </div>
         </header>
 
         <!-- Imagen saludable -->
@@ -25,18 +29,23 @@
 
         <div class="chat-container">
             <div id="chat-box" class="chat-box"></div>
-            <div class="input-group">
-                <input type="text" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="off">
-                <button id="send-btn" class="btn-primary">Enviar</button>
-                <button id="voice-btn" class="btn-secondary">🎤</button>
-            </div>
-        </div>
+            <div class="input-group-wrapper">
+                <div class="input-group">
+                    <input type="text" id="user-input" placeholder="Escribe tu mensaje..." autocomplete="off">
+                    <button id="send-btn" class="btn-primary">Enviar</button>
+                    <button id="voice-btn" class="btn-secondary">
+                    <i class="fas fa-microphone-alt"></i>
+                    </button>
+                </div>
 
-        <div class="action-buttons">
-            <button id="show-calories" class="btn-action">📊 Calorías</button>
-            <button id="reset-btn" class="btn-warning">↻ Reiniciar</button>
-            <button id="test-btn" class="btn-secondary">🧪 Test</button>
-        </div>
+                <div class="reset-group">
+                    <button id="reset-btn" class="btn-warning">
+                    <i class="fas fa-redo-alt"></i> Reiniciar
+                    </button>
+                </div>
+            </div>
+
+            </div>
 
         <div id="nutrition-data" class="oculto">
             <div id="menu-display"></div>
