@@ -10,21 +10,23 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="header-image">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" 
-                    alt="logo NutriBot" 
-                    class="responsive-logo"
-                    loading="lazy">
+        <header class="logo-header">
+            <img src="static/images/logo.png" alt="NutriBot logo" class="logo-icon">
+            <div class="logo-text">
+                <h1>NutriBot</h1>
+                <p class="claim">Comé mejor. Viví mejor.</p>
             </div>
         </header>
 
-        <!-- Imagen saludable -->
-        <div class="header-image">
-            <img src="{{ url_for('static', filename='images/comida_saludable.jpg') }}" 
-                 alt="Alimentos saludables" 
-                 class="responsive-image"
-                 loading="lazy">
+
+        <!-- Collage de inspiración saludable -->
+        <!-- Mini collage horizontal -->
+        <div class="collage-mini">
+        <img src="static/images/comida_saludable.jpg" alt="Comida">
+        <img src="static/images/gimnasio.jpg" alt="Gimnasio">
+        <img src="static/images/pilates.jpg" alt="Pilates">
+        <img src="static/images/running.jpg" alt="Running">
+        <img src="static/images/yoga.jpg" alt="Yoga">
         </div>
 
         <div class="chat-container">
