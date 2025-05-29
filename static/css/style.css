@@ -584,3 +584,74 @@ tr:nth-child(even) {
 .collage-mini img:hover {
   transform: scale(1.05);
 }
+
+
+/* style.css */
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Espacio entre los botones */
+    margin-top: 20px;
+}
+
+.action-buttons .btn-action {
+    background-color: var(--primary); /* O el color que prefieras */
+    color: var(--light);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow);
+}
+
+.action-buttons .btn-action:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.action-buttons .btn-action i {
+    font-size: 1.1rem;
+}
+
+/* Para ocultar/mostrar */
+.oculto {
+    display: none !important;
+}
+
+.email-prompt-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 10px; /* Espacio antes del siguiente mensaje */
+    align-items: center;
+    background-color: var(--light-gray);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--medium-gray);
+}
+
+.email-prompt-group .prompt-input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+.email-prompt-group .prompt-button {
+    padding: 8px 15px;
+    font-size: 0.95rem;
+    border-radius: 6px;
+}
+
+/* Para ocultar/mostrar */
+.oculto {
+    display: none !important;
+}
+
