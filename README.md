@@ -64,8 +64,16 @@ cd nutribot
 
 2. **Instalar dependencias**
 
+Asegúrate de tener un entorno virtual activado (opcional pero recomendado), luego ejecutá:
+
 ```bash
-pip install flask gtts
+pip install -r requirements.txt
+```
+
+O bien, instalalas manualmente:
+
+```bash
+pip install Flask Flask-Mail gTTS WeasyPrint
 ```
 
 3. **Iniciar la aplicación**
@@ -142,3 +150,15 @@ Proyecto realizado por:
 ---
 
 ¡Gracias por usar NutriBot! 🌱 Tu viaje saludable empieza con una conversación 🗨️💚
+
+
+---
+
+## 📦 requirements.txt sugerido
+
+```txt
+Flask
+Flask-Mail
+gTTS
+WeasyPrint
+```
