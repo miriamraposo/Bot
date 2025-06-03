@@ -359,6 +359,7 @@ function processMessage(message) {
             a.click();
             window.URL.revokeObjectURL(url);
             addBotMessage("¡Tu plan nutricional ha sido descargado! 🎉", true);
+            showFinalActionButtons();
         })
         .catch(error => {
             console.error('Error al descargar PDF:', error);
@@ -400,27 +401,85 @@ sendEmailBtn.addEventListener('click', function () {
 
         showLoading(true);
 
-        fetch('/send_plan_email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: email, html_content: lastGeneratedPlanHtml })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                addBotMessage(`✅ El plan ha sido enviado a 📧 ${email}!`, true);
-            } else {
-                addBotMessage(`⚠️ Error al enviar el correo: ${data.message || 'Desconocido'}`, true);
-            }
-            emailInputDiv.remove();
-        })
-        .catch(error => {
-            console.error('Error al enviar email:', error);
-            addBotMessage("⚠️ Error desconocido al enviar el correo.", true);
-            emailInputDiv.remove();
-        })
-        .finally(() => showLoading(false));
+        
+
+fetch('/send_plan_email', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email: email, html_content: lastGeneratedPlanHtml })
+})
+.then(async response => {
+    let data = null;
+
+    try {
+        const contentType = response.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+            data = await response.json();
+        }
+    } catch (err) {
+        console.warn("Error al parsear JSON:", err);
+    }
+
+    if (response.ok && data && data.success) {
+        addBotMessage(`✅ El plan ha sido enviado a 📧 ${email}!`, true);
+        showFinalActionButtons();
+    } else {
+        const errorMsg = (data && data.message) || "Error desconocido al enviar el correo.";
+        addBotMessage(`⚠️ ${errorMsg}`, true);
+    }
+
+    emailInputDiv.remove();
+})
+.catch(error => {
+    console.error('Error al enviar email:', error);
+    addBotMessage("⚠️ Error desconocido al enviar el correo (fallo de red o backend).", true);
+    emailInputDiv.remove();
+})
+.finally(() => showLoading(false));
+
+
+
     });
-});})
+});
+function showFinalActionButtons() {
+    addBotMessage("¿Qué deseas hacer a continuación?", true);
+    showDynamicButtons([
+        { text: "Finalizar", value: "finalizar", handler: handleFinalAction },
+        { text: "Nueva Consulta", value: "nueva_consulta", handler: handleFinalAction }
+    ]);
+}
+
+function handleFinalAction(action) {
+    addUserMessage(action === "finalizar" ? "Finalizar" : "Nueva Consulta");
+    hideDynamicButtons();
+    actionButtonsAfterMenu.classList.add('oculto');
+
+    if (action === "finalizar") {
+        addBotMessage("¡Gracias por usar NutriBot! Espero haberte sido útil 💚", true);
+    } else {
+        resetConversation(); // Volvés al inicio del flujo
+    }
+}
+function showDynamicButtons(buttons) {
+    const container = document.getElementById('button-container');
+    container.innerHTML = '';
+    buttons.forEach(btn => {
+        const buttonEl = document.createElement('button');
+        buttonEl.classList.add('btn-primary');
+        buttonEl.textContent = btn.text;
+        buttonEl.addEventListener('click', () => btn.handler(btn.value));
+        container.appendChild(buttonEl);
+    });
+}
+
+function hideDynamicButtons() {
+    const container = document.getElementById('button-container');
+    container.innerHTML = '';
+}
+
+;})
+
+
+

@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template, request, jsonify, url_for, session, g, send_file
+from flask import Flask, render_template, request, jsonify, url_for, session, g, send_file, make_response
 from gtts import gTTS
 import os
 import time
@@ -782,66 +782,28 @@ def download_plan_pdf():
     except Exception as e:
         app.logger.error(f"Error al generar PDF: {e}")
         return jsonify({'message': f'Error al generar el PDF: {str(e)}'}), 500
-
+    
 @app.route('/send_plan_email', methods=['POST'])
 def send_plan_email():
-    data = request.get_json()
-    recipient_email = data.get('email', '')
-    html_content = data.get('html_content', '')
-    user_name = session.get('name', 'Usuario NutriBot')
-
-    if not recipient_email or not html_content:
-        return jsonify({'success': False, 'message': 'Email o contenido HTML faltante.'}), 400
-
-    subject = f"Tu Plan Nutricional Personalizado de NutriBot para {user_name}"
-
     try:
+        data = request.get_json()
+        recipient_email = data.get('email', '')
+        html_content = data.get('html_content', '')
+        user_name = session.get('name', 'Usuario NutriBot')
+
+        if not recipient_email or not html_content:
+            return jsonify({'success': False, 'message': 'Faltan datos'}), 400
+
+        subject = f"Tu Plan Nutricional Personalizado de NutriBot para {user_name}"
         msg = Message(subject, recipients=[recipient_email])
-        msg.html = f"""
-            <html>
-            <head>
-                <style>
-                    body {{ font-family: 'Poppins', sans-serif; margin: 20px; color: #333; line-height: 1.6; }}
-                    .container {{ max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; border: 1px solid #eee; }}
-                    h1, h2, h3 {{ color: #4CAF50; }}
-                    h3 {{ border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 15px; }}
-                    ul {{ list-style-type: disc; margin-left: 20px; }}
-                    li {{ margin-bottom: 5px; }}
-                    p {{ margin-bottom: 10px; }}
-                    .footer {{ margin-top: 30px; text-align: center; font-size: 0.9em; color: #777; }}
-                    /* Estilos adicionales para el contenido del plan dentro del email */
-                    .menu-container {{ background-color: #ffffff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 15px; }}
-                    .total-calories {{ font-weight: bold; color: #FF9800; text-align: right; margin-top: 10px; }}
-                    .supplements-section, .shopping-list, .exercise-routine {{ background-color: #E3F2FD; padding: 10px; border-radius: 8px; margin: 10px 0; }}
-                    .supplements-section h4, .shopping-list h4, .exercise-routine h4 {{ color: #388E3C; margin-bottom: 8px; }}
-                    .video-links {{ margin-top: 15px; }}
-                    .video-link {{ background-color: #00BCD4; color: white; padding: 8px 12px; border-radius: 6px; text-decoration: none; display: inline-block; margin-right: 10px; margin-bottom: 5px; }}
-                    .imc-display {{ background-color: #E8F5E9; padding: 10px; border-radius: 6px; margin-top: 10px; font-size: 0.9em; }}
-                    .recompensa {{ background-color: #FFF9C4; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #FF9800; }}
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <p>Hola {user_name},</p>
-                    <p>Aquí tienes tu plan nutricional personalizado de NutriBot:</p>
-                    <hr>
-                    {html_content}
-                    <hr>
-                    <p>¡Esperamos que te sea de gran ayuda en tu camino hacia una vida más saludable!</p>
-                    <p>Saludos cordiales,</p>
-                    <p>El equipo de NutriBot</p>
-                    <div class="footer">
-                        <p>Este es un mensaje automático, por favor no respondas a este correo.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-        """
+        msg.html = html_content  # Conserva todo el diseño HTML
+
         mail.send(msg)
-        return jsonify({'success': True, 'message': 'Email enviado correctamente.'})
+        return make_response(jsonify({'success': True}), 200)
     except Exception as e:
         app.logger.error(f"Error al enviar email: {e}")
-        return jsonify({'success': False, 'message': f'Error al enviar el correo: {str(e)}'}), 500
+        return jsonify({'success': False, 'message': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

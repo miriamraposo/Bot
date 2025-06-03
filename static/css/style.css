@@ -655,3 +655,19 @@ tr:nth-child(even) {
     display: none !important;
 }
 
+.btn-history {
+  background-color: #f4f4f4;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-history:hover {
+  background-color: #e0e0e0;
+}
+
+
