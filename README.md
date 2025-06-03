@@ -140,14 +140,18 @@ La función `/text_to_speech` convierte respuestas en audio usando `gTTS`. El te
 
 ## 👩‍💻 Autoras y autores
 
-Proyecto realizado por:
+¡Conocé a quienes hicieron posible NutriBot!
 
-- Mary Luz Caleño
-- Miriam Raposo
-- Natalia Liscio
-- Nahuel Genoese
-- Micaela Vera
----
+| Foto | Nombre | Rol | Bio | Redes |
+|------|--------|-----|-----|-------|
+| ![Mary](static/imagenes/mary.jpg) | **Mary Luz Caleño** | Modelado y evaluación | Amante del fitness y del código limpio. Mary se encargó de entrenar a NutriBot con los mejores modelos. | [LinkedIn](https://linkedin.com/in/maryluz) |
+| ![Miriam](static/imagenes/miriam.jpg) | **Miriam Raposo** | Documentación y QA | Apasionada por las palabras bien usadas y el software sin bugs. Custodia de la calidad del proyecto. | [LinkedIn](https://linkedin.com/in/miriamraposo) |
+| ![Natalia](static/imagenes/natalia.jpg) | **Natalia Liscio** | Visualización y UX | Cree en el poder de los datos bien presentados. Diseñó las visuales y la interacción conversacional. | [LinkedIn](https://linkedin.com/in/natalialiscio) |
+| ![Nahuel](static/imagenes/nahuel.jpg) | **Nahuel Genoese** | Preprocesamiento y features | Hacker de datos por naturaleza. Hizo que el chatbot entienda lo que comemos. | [GitHub](https://github.com/nahuelg) |
+| ![Micaela](static/imagenes/micaela.jpg) | **Micaela Vera** | Frontend y diseño | Artista del CSS y fan de la experiencia de usuario. Hizo que NutriBot se vea tan bien como se siente. | [Instagram](https://instagram.com/micaela.vera) |
+
+> Las imágenes de perfil deben guardarse en `static/imagenes/` y tener nombres en minúsculas, sin espacios.
+
 
 ¡Gracias por usar NutriBot! 🌱 Tu viaje saludable empieza con una conversación 🗨️💚
 
