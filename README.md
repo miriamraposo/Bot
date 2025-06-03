@@ -140,14 +140,20 @@ La función `/text_to_speech` convierte respuestas en audio usando `gTTS`. El te
 
 ## 👩‍💻 Autoras y autores
 
-Proyecto realizado por:
+¡Conocé a quienes hicieron posible NutriBot!
 
-- Mary Luz Caleño
-- Miriam Raposo
-- Natalia Liscio
-- Nahuel Genoese
-- Micaela Vera
----
+
+| Foto | Nombre | Rol en el proyecto | Bio | Redes |
+|------|--------|--------------------|-----|-------|
+| ![Maru](static/imagenes/maru.jpg) | **Mary Luz Caleño** | Arquitectura y lógica inicial | Dio el primer paso con el esqueleto del chatbot. Sentó las bases de la inteligencia conversacional y organizó la estructura general del proyecto. | [LinkedIn](https://linkedin.com/in/maryluz) |
+| ![Natalia](static/imagenes/natalia.jpg) | **Natalia Liscio** | Funcionalidades avanzadas y diseño UX/UI | Le dio alma y estilo a NutriBot. Incorporó nuevas funciones, cuidó cada detalle del diseño y convirtió la experiencia en algo visualmente nutritivo. | [LinkedIn](https://linkedin.com/in/natalialiscio) |
+| ![Micaela](static/imagenes/micaela.jpg) | **Micaela Vera** | Comunicación y presentación | Fue la voz del equipo. Encargada de transmitir el valor del proyecto a través de una presentación clara, creativa y efectiva. | [Instagram](https://instagram.com/micaela.vera) |
+| ![Nahuel](static/imagenes/nahuel.jpg) | **Nahuel Genoese** | Soporte técnico y testing | Colaboró en la validación del chatbot y brindó apoyo para asegurar que todo funcionara sin errores. | [GitHub](https://github.com/nahuelg) |
+| ![Miriam](static/imagenes/miriam.jpg) | **Miriam Raposo** | Revisión y control de calidad | Supervisó la documentación final y se encargó de los detalles que hacen a un proyecto bien cerrado. | [LinkedIn](https://linkedin.com/in/miriamraposo) |
+
+
+> Las imágenes de perfil deben guardarse en `static/imagenes/` y tener nombres en minúsculas, sin espacios.
+
 
 ¡Gracias por usar NutriBot! 🌱 Tu viaje saludable empieza con una conversación 🗨️💚
 
