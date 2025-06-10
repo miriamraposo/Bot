@@ -10,7 +10,7 @@ from datetime import datetime
 import json
 
 # Para PDF
-from weasyprint import HTML, CSS
+#from weasyprint import HTML, CSS
 import io
 
 # Para Email
