@@ -817,8 +817,8 @@ app = Flask(__name__)
 CORS(app) # Habilita CORS para todas las rutas y orígenes
 # ... el resto de tu configuración de Flask ...
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+#if __name__ == '__main__':
+#    app.run(host='0.0.0.0', port=5000, debug=True)
 
 
 
