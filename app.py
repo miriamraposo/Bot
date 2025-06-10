@@ -14,7 +14,7 @@ from weasyprint import HTML, CSS
 import io
 
 # Para Email
-from flask_mail import Mail, Message
+#from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.secret_key = 'clave_secreta_profesional_2024'
@@ -23,14 +23,16 @@ app.config['UPLOAD_FOLDER'] = 'static/audios'
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 1 hora de sesión
 
 # Configuración de Flask-Mail (¡IMPORTANTE: REEMPLAZA CON TUS CREDENCIALES!)
-app.config['MAIL_SERVER'] = 'smtp.gmail.com' # Por ejemplo, para Gmail
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'chatbot.nutricion.app@gmail.com' # Reemplaza con tu dirección de correo
-app.config['MAIL_PASSWORD'] = 'ptbl tjxh cyjs jxvc' # Reemplaza con tu contraseña de aplicación
-app.config['MAIL_DEFAULT_SENDER'] = 'NutriBot <chatbot.nutricion.app@gmail.com>' # Remitente visible
+#app.config['MAIL_SERVER'] = 'smtp.gmail.com' # Por ejemplo, para Gmail
+#app.config['MAIL_PORT'] = 587
+#app.config['MAIL_USE_TLS'] = True
+#app.config['MAIL_USERNAME'] = 'chatbot.nutricion.app@gmail.com' # Tu dirección de correo
+# ¡Aquí está el cambio clave!
+#app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_APP_PASSWORD') # Lee de la variable de entorno
+# app.config['MAIL_PASSWORD'] = 'ptbl tjxh cyjs jxvc' # <-- ¡ELIMINA O COMENTA ESTA LÍNEA!
+#app.config['MAIL_DEFAULT_SENDER'] = 'NutriBot <chatbot.nutricion.app@gmail.com>' # Remitente visible
 
-mail = Mail(app)
+#mail = Mail(app)
 
 # Crear directorios necesarios
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
@@ -688,123 +690,130 @@ def show_history():
 
 # --- NUEVAS RUTAS para PDF y Email ---
 
-@app.route('/download_plan_pdf', methods=['POST'])
-def download_plan_pdf():
-    data = request.get_json()
-    html_content = data.get('html_content', '')
-    user_name = session.get('name', 'Usuario NutriBot')
+#@app.route('/download_plan_pdf', methods=['POST'])
+#def download_plan_pdf():
+    #data = request.get_json()
+    #html_content = data.get('html_content', '')
+   # user_name = session.get('name', 'Usuario NutriBot')
 
-    if not html_content:
-        return jsonify({'message': 'No content provided for PDF generation'}), 400
+    #if not html_content:
+       # return jsonify({'message': 'No content provided for PDF generation'}), 400
 
-    try:
+    #try:
         # Estilos para el PDF (puedes copiar de tu style.css o personalizar)
-        css_for_pdf = CSS(string='''
-            body { font-family: 'Poppins', sans-serif; margin: 20px; color: #333; line-height: 1.6; }
-            .menu-container {
-                background-color: #f9f9f9;
-                padding: 20px;
-                border-radius: 10px;
-                border: 1px solid #eee;
-                margin-bottom: 20px;
-            }
-            h2, h3 { color: #4CAF50; }
-            h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 15px; }
-            ul { list-style-type: none; padding-left: 0; }
-            li { margin-bottom: 5px; }
-            p { margin-bottom: 10px; }
-            .total-calories { font-weight: bold; color: #FF9800; text-align: right; margin-top: 10px; }
-            .supplements-section, .shopping-list, .exercise-routine {
-                background-color: #E3F2FD;
-                padding: 10px;
-                border-radius: 8px;
-                margin: 10px 0;
-            }
-            .supplements-section h4, .shopping-list h4, .exercise-routine h4 {
-                color: #388E3C;
-                margin-bottom: 8px;
-            }
-            .video-links { margin-top: 15px; }
-            .video-link {
-                background-color: #00BCD4;
-                color: white;
-                padding: 8px 12px;
-                border-radius: 6px;
-                text-decoration: none;
-                display: block; /* Para que cada link ocupe su propia línea en PDF */
-                margin-bottom: 5px;
-            }
-            .imc-display {
-                background-color: #E8F5E9;
-                padding: 10px;
-                border-radius: 6px;
-                margin-top: 10px;
-                font-size: 0.9em;
-            }
-            .recompensa {
-                background-color: #FFF9C4;
-                padding: 15px;
-                border-radius: 8px;
-                margin-top: 15px;
-                border-left: 4px solid #FF9800;
-            }
-        ''')
+        #css_for_pdf = CSS(string='''
+            #body { font-family: 'Poppins', sans-serif; margin: 20px; color: #333; line-height: 1.6; }
+            #.menu-container {
+               # background-color: #f9f9f9;
+               # padding: 20px;
+               # border-radius: 10px;
+               # border: 1px solid #eee;
+               # margin-bottom: 20px;
+           # }
+           # h2, h3 { color: #4CAF50; }
+           # h3 { border-bottom: 1px solid #eee; padding-bottom: 5px; margin-top: 15px; }
+           # ul { list-style-type: none; padding-left: 0; }
+           # li { margin-bottom: 5px; }
+           # p { margin-bottom: 10px; }
+           # .total-calories { font-weight: bold; color: #FF9800; text-align: right; margin-top: 10px; }
+            #.supplements-section, .shopping-list, .exercise-routine {
+             #   background-color: #E3F2FD;
+             #   padding: 10px;
+              #  border-radius: 8px;
+              #  margin: 10px 0;
+          #  }
+          #  .supplements-section h4, .shopping-list h4, .exercise-routine h4 {
+           #     color: #388E3C;
+            #    margin-bottom: 8px;
+            #}
+            #.video-links { margin-top: 15px; }
+         #   .video-link {
+          #      background-color: #00BCD4;
+           #     color: white;
+            #    padding: 8px 12px;
+             #   border-radius: 6px;
+              #  text-decoration: none;
+               # display: block; /* Para que cada link ocupe su propia línea en PDF */
+                #margin-bottom: 5px;
+      #      }
+       #     .imc-display {
+        #        background-color: #E8F5E9;
+         #       padding: 10px;
+          #      border-radius: 6px;
+           #     margin-top: 10px;
+            #    font-size: 0.9em;
+            #}
+#            .recompensa {
+#                background-color: #FFF9C4;
+#                padding: 15px;
+#                border-radius: 8px;
+#                margin-top: 15px;
+#                border-left: 4px solid #FF9800;
+       #     }
+        #''')
 
         # Incluir un encabezado para el PDF
-        full_html = f"""
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>Plan Nutricional de NutriBot para {user_name}</title>
-        </head>
-        <body>
-            <h1>Tu Plan Nutricional de NutriBot</h1>
-            <p>Generado el: {datetime.now().strftime('%d/%m/%Y %H:%M')}</p>
-            <hr>
-            {html_content}
-            <hr>
-            <p style="text-align: center; font-size: 0.8em; color: #777;">
-                Gracias por usar NutriBot. ¡Esperamos que disfrutes tu plan!
-            </p>
-        </body>
-        </html>
-        """
+#        full_html = f"""
+ #       <html>
+  #      <head>
+   #         <meta charset="UTF-8">
+    #        <title>Plan Nutricional de NutriBot para {user_name}</title>
+     #   </head>
+      #  <body>
+       #     <h1>Tu Plan Nutricional de NutriBot</h1>
+        #    <p>Generado el: {datetime.now().strftime('%d/%m/%Y %H:%M')}</p>
+         #   <hr>
+          #  {html_content}
+           # <hr>
+#            <p style="text-align: center; font-size: 0.8em; color: #777;">
+ #               Gracias por usar NutriBot. ¡Esperamos que disfrutes tu plan!
+  #          </p>
+   #     </body>
+    #    </html>
+     #   """
 
-        pdf_file = io.BytesIO()
-        HTML(string=full_html).write_pdf(pdf_file, stylesheets=[css_for_pdf])
-        pdf_file.seek(0)
+ #       pdf_file = io.BytesIO()
+  #      HTML(string=full_html).write_pdf(pdf_file, stylesheets=[css_for_pdf])
+   #     pdf_file.seek(0)
 
-        return send_file(
-            pdf_file,
-            mimetype='application/pdf',
-            as_attachment=True,
-            download_name='PlanNutricional_NutriBot.pdf'
-        )
-    except Exception as e:
-        app.logger.error(f"Error al generar PDF: {e}")
-        return jsonify({'message': f'Error al generar el PDF: {str(e)}'}), 500
+    #    return send_file(
+     #       pdf_file,
+      #      mimetype='application/pdf',
+       #     as_attachment=True,
+        #    download_name='PlanNutricional_NutriBot.pdf'
+#        )
+ #   except Exception as e:
+ #       app.logger.error(f"Error al generar PDF: {e}")
+  #      return jsonify({'message': f'Error al generar el PDF: {str(e)}'}), 500
     
-@app.route('/send_plan_email', methods=['POST'])
-def send_plan_email():
-    try:
-        data = request.get_json()
-        recipient_email = data.get('email', '')
-        html_content = data.get('html_content', '')
-        user_name = session.get('name', 'Usuario NutriBot')
+#@app.route('/send_plan_email', methods=['POST'])
+#def send_plan_email():
+ #   try:
+ #       data = request.get_json()
+ #       recipient_email = data.get('email', '')
+ #       html_content = data.get('html_content', '')
+ #       user_name = session.get('name', 'Usuario NutriBot')
 
-        if not recipient_email or not html_content:
-            return jsonify({'success': False, 'message': 'Faltan datos'}), 400
+  #      if not recipient_email or not html_content:
+  #          return jsonify({'success': False, 'message': 'Faltan datos'}), 400
 
-        subject = f"Tu Plan Nutricional Personalizado de NutriBot para {user_name}"
-        msg = Message(subject, recipients=[recipient_email])
-        msg.html = html_content  # Conserva todo el diseño HTML
+  #      subject = f"Tu Plan Nutricional Personalizado de NutriBot para {user_name}"
+  #      msg = Message(subject, recipients=[recipient_email])
+  #      msg.html = html_content  # Conserva todo el diseño HTML
 
-        mail.send(msg)
-        return make_response(jsonify({'success': True}), 200)
-    except Exception as e:
-        app.logger.error(f"Error al enviar email: {e}")
-        return jsonify({'success': False, 'message': str(e)}), 500
+  #      mail.send(msg)
+  #      return make_response(jsonify({'success': True}), 200)
+  #      except Exception as e:
+  #      app.logger.error(f"Error al enviar email: {e}")
+  #      return jsonify({'success': False, 'message': str(e)}), 500
 
+
+app = Flask(__name__)
+CORS(app) # Habilita CORS para todas las rutas y orígenes
+# ... el resto de tu configuración de Flask ...
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+
+
