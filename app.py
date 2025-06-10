@@ -17,6 +17,11 @@ import io
 #from flask_mail import Mail, Message
 
 app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "¡Hola desde Render!"
+
 app.secret_key = 'clave_secreta_profesional_2024'
 app.config['DATABASE'] = 'nutribot.db'
 app.config['UPLOAD_FOLDER'] = 'static/audios'
