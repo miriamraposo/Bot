@@ -1,5 +1,6 @@
 # app.py
 from flask import Flask, render_template, request, jsonify, url_for, session, g, send_file, make_response
+from flask_cors import CORS 
 from gtts import gTTS
 import os
 import time
