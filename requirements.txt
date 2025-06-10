@@ -3,5 +3,4 @@ gTTS==2.5.4
 Flask-Mail==0.10.0
 weasyprint==65.1
 gunicorn==22.0.0
-# Si usas Flask-CORS para la separación de frontend/backend (muy recomendado):
-# Flask-Cors==4.0.0
+Flask-Cors==4.0.0
