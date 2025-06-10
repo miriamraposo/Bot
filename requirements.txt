@@ -1,5 +1,5 @@
 Flask==3.1.1
-gTTS==2.5.4
+#gTTS==2.5.4
 #Flask-Mail==0.10.0
 #weasyprint==65.1
 gunicorn==22.0.0
